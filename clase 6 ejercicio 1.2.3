@@ -1,0 +1,66 @@
+//clase 6 ejercicio 1
+
+// Importamos dotenv para manejar las variables de entorno.
+require('dotenv').config();
+
+// Obtenemos el saludo desde las variables de entorno o usamos "Hola" por defecto.
+const greeting = process.env.GREETING || 'Hola';
+
+// Obtenemos el nombre del usuario desde los argumentos de línea de comandos.
+// Si no hay argumentos, usamos "Invitado" como predeterminado.
+const name = process.argv[2] || 'Invitado';
+
+// Mostramos el saludo personalizado.
+console.log(`${greeting}, ${name}!`)
+
+SALUDO =¡Buenos días!
+
+
+ // clase 6 ejercicio 2
+
+ // mostramos la plataforma actual
+  
+console.log(`Estás usando el sistema operativo: ${process.platform}`);
+
+// mostramos el directorio actual de trabajo
+
+console.log(`El programa se ejecuta desde el directorio: ${process.cwd()}`);
+
+ // clase 6 ejercicio 3
+
+ // importamos el módulo readline
+const readline = require('readline');
+
+// creamos la interfaz para interactuar con el usuario
+
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+});
+
+// preguntamos por el primer número
+rl.question('Introduce el primer número: ', (num1) => {
+
+    // preguntamos por el segundo número
+
+    rl.question('Introduce el segundo número: ', (num2) => {
+        // calculamos la suma
+
+        const suma = parseFloat(num1) + parseFloat(num2);
+
+        // mostramos el resultado
+
+        console.log(`La suma de ${num1} y ${num2} es: ${suma}`);
+
+        // cerramos la interfaz
+
+        rl.close();
+    });
+});
+
+// manejamos el evento de cierre para finalizar el programa
+
+rl.on('close', () => {
+    console.log('¡Gracias por usar el programa!');
+    process.exit(0);
+});

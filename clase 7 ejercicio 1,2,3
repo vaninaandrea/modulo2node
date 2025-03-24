@@ -1,0 +1,88 @@
+// clase 7 ejercicio 1
+
+const net = require('net');
+
+const server = net.createServer((socket) => {
+    console.log('Un cliente se ha conectado.');
+
+    // evento 'data': recibe datos del cliente y los devuelve (eco).
+    socket.on('data', (data) => {
+        console.log(`Datos recibidos: ${data.toString()}`);
+        socket.write(data); // envía los datos de vuelta al cliente.
+    });
+
+    // evento 'end': 
+    // el cliente cerró la conexión
+
+    socket.on('end', () => {
+        console.log('El cliente se ha desconectado.');
+    });
+
+    // evento 'close':la conexión se cerró
+    socket.on('close', () => {
+        console.log('Conexión cerrada.');
+    });
+});
+
+     clase 7 ejercicio 2 
+
+     const net = require('net');
+
+const server = net.createServer((socket) => {
+    console.log('Un cliente se ha conectado.');
+
+    // establece un timeout de 10 segundos
+
+    socket.setTimeout(10000);
+
+    // evento 'timeout': cierra la conexión si no se reciben datos.
+    socket.on('timeout', () => {
+        console.log('Tiempo de espera agotado. Cerrando conexión.');
+        socket.end();
+    });
+
+    // evento 'data': reinicia el timeout cada vez que se reciben datos.
+    socket.on('data', (data) => {
+        console.log(`Datos recibidos: ${data.toString()}`);
+        socket.setTimeout(10000); // reinicia el timeout.
+    });
+});
+
+server.listen(3000, () => {
+    console.log('Servidor escuchando en el puerto 3000.');
+});
+
+ //clase 7 ejercicio 3 
+
+ const net = require('net');
+
+const server = net.createServer((socket) => {
+    console.log('Un cliente se ha conectado.');
+
+    // evento 'data': procesa los mensajes del cliente
+    
+    socket.on('data', (data) => {
+        const message = data.toString().trim();
+
+        if (message === 'Hola') {
+            socket.write('¡Bienvenido!\n');
+        } else if (message === 'Adiós') {
+            socket.write('¡Hasta luego!\n');
+            socket.end(); // cierra la conexión
+        } else {
+            socket.write(`Mensaje recibido: ${message}\n`);
+        }
+    });
+});
+
+server.listen(3000, () => {
+    console.log('Servidor escuchando en el puerto 3000.');
+});
+
+
+
+
+
+
+
+

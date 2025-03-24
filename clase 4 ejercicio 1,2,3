@@ -1,0 +1,78 @@
+// clase 4 ejercicio 1
+
+// Importamos el módulo fs para trabajar con archivos
+const fs = require('fs');
+
+// Creamos un objeto que representa nuestro perfil
+const perfil = {
+    nombre: "Josefha",
+    edad: 38,
+    ciudadFavorita: "Bruselas"
+};
+
+// Convertimos el objeto en un formato JSON y escribimos el archivo
+fs.writeFile('perfil.json', JSON.stringify(perfil, null, 2), (err) => {
+    if (err) {
+        // Si ocurre un error, lo mostramos en consola
+        console.error("Hubo un error al crear tu perfil:", err);
+    } else {
+        // Mensaje de éxito
+        console.log("Perfil creado exitosamente Revisa el archivo perfil.json.");
+    }
+});
+
+ // clase 4 ejercicio 2
+
+ // Importamos el módulo fs para leer archivos
+
+const fs = require('fs');
+
+// Leemos el archivo perfil.json
+
+fs.readFile('perfil.json', 'utf-8', (err, data) => {
+    if (err) {
+
+        // Si ocurre un error al leer el archivo, lo mostramos
+
+        console.error("No se pudo leer tu perfil:", err);
+    } else {
+        // Convertimos el contenido a un objeto y lo mostramos en consola
+
+        const perfil = JSON.parse(data);
+        console.log("¡Aquí está tu perfil! ", perfil)
+
+
+    }
+
+// clase 4 ejercicio 3
+
+// Importamos el módulo fs para trabajar con archivos
+const fs = require('fs');
+
+// Leemos el archivo perfil.json
+
+fs.readFile('perfil.json', 'utf-8', (err, data) => {
+    if (err) {
+        // Si ocurre un error al leer el archivo, lo mostramos
+        console.error("No se pudo leer el archivo para actualizar:", err);
+    } else {
+        // Convertimos el contenido en un objeto
+
+        const perfil = JSON.parse(data);
+
+        // Agregamos un nuevo atributo
+
+        perfil.hobby = "Teatro";
+
+        // Guardamos el objeto actualizado en el archivo
+
+        fs.writeFile('perfil.json', JSON.stringify(perfil, null, 2), (err) => {
+            if (err) {
+                console.error("No se pudo actualizar tu perfil:", err);
+            } else {
+                console.log("¡Perfil actualizado con tu nuevo hobby! ");
+            }
+        });
+    }
+});
+

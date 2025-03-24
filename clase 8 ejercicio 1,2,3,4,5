@@ -1,0 +1,52 @@
+// clase 8 ejercicio 1,2,3,4,5
+
+// ejercicio 1
+
+const net = require('net');
+const client = net.createConnection({ port: 5000, host: 'localhost' });
+
+client.on('connect', () => {
+    console.log(' Conectado al servidor');
+    client.write('¡Hola, servidor!');
+});
+
+client.on('data', (data) => {
+    console.log(' Datos recibidos:', data.toString());
+});
+
+// ejercicio 2
+
+client.setTimeout(5000, () => {
+    console.log(' Tiempo de espera agotado');
+    client.end();
+});
+
+// ejercicio 3
+
+
+client.on('data', (data) => {
+    console.log(' Recibido:', data.toString());
+    client.pause();
+    setTimeout(() => {
+        console.log('Reanudando recepción de datos');
+        client.resume();
+    }, 3000);
+});
+
+// ejercicio 4
+
+client.on('error', (err) => {
+    console.log(' Error:', err.message);
+});
+
+client.on('close', () => {
+    console.log(' Conexión cerrada inesperadamente');
+});
+
+// ejercicio 5
+
+client.on('end', () => {
+    console.log(' Servidor cerró la conexión');
+});
+
+

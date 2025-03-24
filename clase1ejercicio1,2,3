@@ -1,0 +1,47 @@
+// clase 1 ejercicio 1
+
+function personasQuePuedenEntrar(edades) {
+    let contador = 0; // Inicializamos un contador
+
+    for (let i = 0; i < edades.length; i++) {
+        if (edades[i] > 12 && edades[i] < 60) {
+            contador++; // Incrementamos el contador si la edad está en el rango
+        }
+    }
+
+    return contador; // Retornamos el número total de personas
+}
+
+let edades = [10, 15, 35, 65, 12, 59];
+console.log(personasQuePuedenEntrar(edades)); // Debe devolver 4
+ 
+// clase 1 ejercicio 2 
+
+function platosBaratos(menu) {
+    let platos = []; // Inicializamos un array vacío
+
+    for (let plato in menu) {
+        if (menu[plato] < 20) {
+            platos.push(plato); // Agregamos el plato si cumple con la condición
+        }
+    }
+
+    return platos; // Retornamos los platos baratos
+}
+
+
+let menu = {
+    "Ensalada": 15,
+    "Sopa": 8,
+    "Carne": 25,
+    "Pasta": 18
+};
+
+// clase 1 ejrcicio 3
+
+function ordenarNumeros(numeros) {
+    return numeros.sort((a, b) => a - b); // Ordenamos de menor a mayor
+}
+
+let numeros = [5, 2, 9, 1, 7];
+console.log(ordenarNumeros(numeros)); // Debe devolver [1, 2, 5, 7, 9]

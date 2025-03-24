@@ -1,0 +1,62 @@
+//clase 2 ejercicio 1
+
+// Creación del objeto JSON
+let libro = {
+    titulo: "Ficciones",
+    autor: "Jorge Luis Borges",
+    año: 2011,
+    genero: ["Fantastica", "Novela"]
+};
+
+// Mostrar el título y el autor del libro en la consola
+console.log("Título:", libro.titulo);
+console.log("Autor:", libro.autor);
+
+// Actualizar el año del libro a un valor más reciente
+libro.año = 2025;
+
+// Añadir una nueva propiedad llamada páginas
+libro.páginas = 219  ;
+
+// Mostrar el objeto actualizado en la consola
+console.log("Objeto actualizado:", libro);
+
+//clase 2 ejercicio 2
+
+let estudiante = {
+    nombre: "Pilar Sosa",
+    edad: 19,
+    curso: "Programación Web",
+    notas: [8, 9, 10, 7]
+};
+
+let estudianteJSON = JSON.stringify(estudiante);  // Convierte a JSON
+
+console.log(estudianteJSON);  // Muestra la cadena JSON
+
+ // lo convierte de vuelta a objeto
+
+let estudianteObj = JSON.parse(estudianteJSON); 
+
+ // Muestra el objeto
+console.log(estudianteObj); 
+
+// clase 2 ejercicio 3   (1)
+
+// Importa el objeto
+
+let curso = require('./datos.js');  
+
+ // Muestra la información del curso
+console.log(curso); 
+
+// clase 2 ejercicio 3 (2)
+
+let curso = {
+    nombreCurso: "JavaScript para principiantes",
+    duracion: "4 semanas",
+    temas: ["Variables", "Funciones", "Matrices", "Objetos"]
+};
+
+// Exporta el objeto
+module.exports = curso;  

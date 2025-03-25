@@ -1,0 +1,115 @@
+ // clase 12 ejercicio 1  servidor
+
+const net = require('net');
+const { handleBookRequest } = require('./controllers/bookController');
+
+const PORT = 4000;
+
+// creación del servidor TCP
+const server = net.createServer((socket) => {
+    console.log('Cliente conectado');
+
+    socket.on('data', (data) => {
+        const bookId = data.toString().trim();
+        console.log(`Solicitud recibida para el libro con ID: ${bookId}`);
+
+        const response = handleBookRequest(bookId);
+        socket.write(response);
+        socket.end(); // cierra la conexión después de responder
+    });
+
+    socket.on('end', () => {
+        console.log('Cliente desconectado');
+    });
+
+    socket.on('error', (err) => {
+        console.error('Error en el servidor:', err);
+    });
+});
+
+// servidor escucha en el puerto 4000
+server.listen(PORT, () => {
+    console.log(`Servidor escuchando en el puerto ${PORT}`);
+});
+
+
+// cliente
+const net = require('net');
+const readline = require('readline');
+
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
+
+const PORT = 4000;
+const HOST = '127.0.0.1';
+
+// función para conectar al servidor y enviar una solicitud
+const requestBook = (bookId) => {
+    const client = new net.Socket();
+
+    client.connect(PORT, HOST, () => {
+        console.log(`Conectado al servidor. Solicitando información del libro con ID: ${bookId}`);
+        client.write(bookId);
+    });
+
+    client.on('data', (data) => {
+        console.log('Respuesta del servidor:', data.toString());
+        client.destroy(); // cierra la conexión después de recibir la respuesta
+    });
+
+    client.on('close', () => {
+        console.log('Conexión cerrada');
+        rl.close();
+    });
+
+    client.on('error', (err) => {
+        console.error('Error en el cliente:', err);
+        rl.close();
+    });
+};
+
+// solicita al usuario el ID del libro
+rl.question('Ingrese el ID del libro que desea consultar: ', (bookId) => {
+    requestBook(bookId);
+});
+
+// modelos 
+const fs = require('fs');
+const path = require('path');
+
+// ruta del archivo JSON que contiene la lista de libros
+const filePath = path.join(__dirname, '../data/books.json');
+
+// función para obtener un libro por su ID
+const getBookById = (id) => {
+    try {
+        const data = fs.readFileSync(filePath, 'utf8');
+        const books = JSON.parse(data);
+        return books.find(book => book.id === id) || null;
+    } catch (error) {
+        console.error('Error al leer el archivo JSON:', error);
+        return null;
+    }
+};
+
+module.exports = { getBookById };
+
+// datos
+
+{ "id": "1", "titulo": "Ficciones ", "autor": "Jorge Luis Borges", "año": 2011},
+{ "id": "2", "titulo": "La Tregua", "autor": "Mario Benedetti", "año": 1960},
+{ "id": "3", "titulo": "El Juguete rabioso", "autor": "Roberto Arlt", "año": 1926 }
+
+// controller
+
+const { getBookById } = require('../models/bookModel');
+const { formatBookResponse } = require('../views/bookView');
+
+// función para manejar la solicitud del cliente
+const handleBookRequest = (bookId) => {
+    const book = getBookById(bookId);
+    return formatBookResponse(book);
+};
+

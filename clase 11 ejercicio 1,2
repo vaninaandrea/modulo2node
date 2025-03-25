@@ -1,0 +1,114 @@
+// clase 11 ejercicio 1
+// servidor 
+
+const net = require('net');
+const path = require('path');
+
+// craar el servidor TCP
+const server = net.createServer((socket) => {
+    socket.on('data', (data) => {
+
+        // convertir datos recibidos a una cadena y eliminar espacios en blanco
+        const inputPath = data.toString().trim();
+
+        // verificar si la ruta es absoluta
+        const isAbsolute = path.isAbsolute(inputPath);
+
+        // 
+        // crear la respuesta basada en el tipo de ruta
+        const response = isAbsolute ? 'La ruta es absoluta.' : 'La ruta es relativa.';
+
+        // enviar la respuesta al cliente
+        socket.write(response);
+    });
+
+    // manejar la desconexión del cliente
+    socket.on('end', () => {
+        console.log('Cliente desconectado.');
+    });
+});
+
+// configurar el puerto en el que el servidor escuchará
+server.listen(8080, () => {
+    console.log('Servidor escuchando en el puerto 8080.');
+});
+
+// cliente
+
+const net = require('net');
+
+// conectar al servidor en el puerto 8080
+const client = net.createConnection({ port: 8080 }, () => {
+    console.log('Conectado al servidor');
+
+    // enviar varias rutas como comandos
+    client.write('/home/user/documento.txt'); // Comando 1: Ruta absoluta
+    client.write('documento.txt'); // Comando 2: Ruta relativa
+    client.write('/another/path/to/file'); // Comando 3: Otra ruta absoluta
+});
+
+// leer la respuesta del servidor
+client.on('data', (data) => {
+    console.log(data.toString());
+    client.end(); // terminar la conexión después de recibir la respuesta
+});
+
+client.on('end', () => {
+    console.log('Desconectado del servidor');
+});
+
+// clase 11 ejercicio 2 servidor
+
+const net = require('net');
+const path = require('path');
+
+// crear el servidor TCP
+const server = net.createServer((socket) => {
+    console.log('Cliente conectado');
+
+    // manejar datos recibidos del cliente
+    socket.on('data', (data) => {
+        // convertir datos recibidos a una cadena y eliminar espacios en blanco
+        const inputPath = data.toString().trim();
+
+        // normalizar la ruta usando path.normalize
+        const normalizedPath = path.normalize(inputPath);
+
+        // enviar la ruta normalizada al cliente
+        socket.write(normalizedPath);
+    });
+
+    // manejar la desconexión del cliente
+    socket.on('end', () => {
+        console.log('Cliente desconectado.');
+    });
+});
+
+// configurar el puerto en el que el servidor escuchará
+server.listen(8081, () => {
+    console.log('Servidor escuchando en el puerto 8081.');
+});
+
+//cliente 
+
+const net = require('net');
+
+// conectar al servidor en el puerto 8081
+const client = net.createConnection({ port: 8081 }, () => {
+    console.log('Conectado al servidor');
+
+    // enviar rutas con barras redundantes y puntos
+    client.write('./docs/../file.txt'); // Ruta con barras redundantes y puntos
+    client.write('docs/./file.txt');    // Otra ruta con puntos
+});
+
+// leer la respuesta del servidor
+client.on('data', (data) => {
+    console.log('Ruta normalizada:', data.toString());
+    client.end(); // terminar la conexión después de recibir la respuesta
+});
+
+client.on('end', () => {
+    console.log('Desconectado del servidor');
+});
+
